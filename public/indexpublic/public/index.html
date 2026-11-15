@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bavard</title>
+<style>
+body{margin:0;font-family:sans-serif;background:#111b21}
+header{background:#075e54;color:white;padding:15px;font-size:20px;font-weight:bold}
+#messages{padding:10px;height:70vh;overflow:auto}
+.msg{background:#dcf8c6;padding:8px 12px;border-radius:10px;margin:5px;max-width:80%;color:#111}
+form{position:fixed;bottom:0;left:0;right:0;display:flex;background:#f0f0f0;padding:10px}
+input{flex:1;padding:12px;border-radius:20px;border:none;outline:none}
+button{background:#25d366;color:white;border:none;padding:12px 18px;border-radius:50%;margin-left:8px;font-size:18px}
+</style></head>
+<body>
+<header>💬 Bavard - comme WhatsApp</header>
+<div id="messages"></div>
+<form id="form"><input id="input" placeholder="Écris un message..."/><button>➤</button></form>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+var socket=io();
+var form=document.getElementById('form');
+var input=document.getElementById('input');
+var messages=document.getElementById('messages');
+form.addEventListener('submit',function(e){e.preventDefault();if(input.value){socket.emit('chat message',input.value);input.value='';}});
+socket.on('chat message',function(msg){var d=document.createElement('div');d.className='msg';d.textContent=msg;messages.appendChild(d);});
+</script>
+</body></html>
